@@ -1,0 +1,32 @@
+<html>
+<head>
+</head>
+<body>
+  <input id="message" type="text"/>
+  <button id="send">Send</button>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+  $(document).ready(function() {
+  function polling() {
+    $.ajax({
+      method: 'GET',
+      url: '/messages',
+      success: function(data){
+          console.log(data)
+      },
+      complete: function(){
+          polling()
+      },
+      timeout: 30000
+    })
+  }
+
+  polling()
+
+  $('#send').on('click', function() {
+    $.post('/messages', {data: $('#message')[0].value})
+  })
+  })
+  </script>
+</body>
+</html>
